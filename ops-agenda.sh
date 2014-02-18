@@ -30,7 +30,7 @@ fi
 echo $MEETINGDATE
 echo $TOPIC
 echo $HOUR
-echo $COUNT
+#echo $COUNT
 
 
 
