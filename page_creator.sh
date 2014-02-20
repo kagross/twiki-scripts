@@ -1,6 +1,5 @@
 ###############################################
 # TWiki Page Generator                        #
-# Written by Kyle Gross                       #
 ###############################################
 
 #Environment Variables
@@ -9,8 +8,27 @@ LOCATION=/usr/local/twiki/
 
 #Template Locations (No Leading / )
 
-OPERATIONS=data/Operations/OperationsMeetingTemplate.txt
+OPERATIONS=data/Operations/
 
+#Template Names (Just Filename.txt)
+
+OPERATIONS_TEMPLATE=OperationsMeetingTemplate.txt
+
+
+#Prompt for Options
+
+while true; do
+    read -p 	"What page would you like to create?
+1 - Operations
+2 - Quit
+" page
+
+    case $page in
+        [1]* ) make install; break;;
+        [2]* ) exit;;
+        * ) echo "Please answer with a number.";;
+    esac
+done
 
 
 
@@ -32,7 +50,7 @@ fi
 
 
 # Uses template file to copy Topic into a temporary file to be edited then put into production
-sudo cp $LOCATION$OPERATIONS ./$TOPIC.tmp
+sudo cp $LOCATION$OPERATIONS$OPERATIONS_TEMPLATE ./$TOPIC.tmp
 
 
 # Makes changes to date in template file and outputs to final topic.
@@ -45,14 +63,14 @@ sudo rm $TOPIC.tmp
 sudo chown apache:apache $TOPIC.txt
 
 # Moves topic from local user directory to twiki directory
-sudo mv $TOPIC.txt /usr/local/twiki/data/Operations/
+sudo mv $TOPIC.txt $LOCATION$OPERATIONS
 
 # Confirms file that was created.  Not needed if put in crontab.
 echo $TOPIC.txt created.
 
 
 # Creates local temp file of Meeting Minutes list
-sudo cp /usr/local/twiki/data/Operations/ProductionMeetingMinutes.txt ./ProductionMeetingMinutes.tmp
+sudo cp $LOCATION$OPERATIONSProductionMeetingMinutes.txt ./ProductionMeetingMinutes.tmp
 
 # Inserts topic into correct spot in list
 sudo sed '17i\'"   * $TOPIC" ProductionMeetingMinutes.tmp > ProductionMeetingMinutes.txt
@@ -61,4 +79,4 @@ sudo sed '17i\'"   * $TOPIC" ProductionMeetingMinutes.tmp > ProductionMeetingMin
 sudo chown apache:apache ProductionMeetingMinutes.txt
 
 # Places edited file into production
-sudo mv ProductionMeetingMinutes.txt /usr/local/twiki/data/Operations/
+sudo mv ProductionMeetingMinutes.txt $LOCATION$OPERATIONS
