@@ -3,6 +3,15 @@
 # Written by Kyle Gross                       #
 ###############################################
 
+#Environment Variables
+
+LOCATION=/usr/local/twiki/
+
+OPERATIONS=/data/Operations
+
+echo $LOCATION
+echo $OPERATIONS
+
 #Get the full word Value of today (ie Monday, Tuesday)
 TODAY=$(date "+%A" -d today)
 
