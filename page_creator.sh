@@ -4,7 +4,7 @@
 
 #Environment Variables
 
-LOCATION=/usr/local/twiki/
+LOCATION=/tmp/usr/local/twiki/
 
 #Template Locations (No Leading / )
 
@@ -24,8 +24,8 @@ while true; do
 " page
 
     case $page in
-        [1]* ) make install; break;;
-        [2]* ) exit;;
+        [1]* ) break;;
+        [2]* ) break;;
         * ) echo "Please answer with a number.";;
     esac
 done
@@ -49,9 +49,15 @@ else
 fi
 
 
+
+#############################################################################################
+################################# Operations Meeting Agenda #################################
+#############################################################################################
+
+if [ $page == 1 ]; then
+
 # Uses template file to copy Topic into a temporary file to be edited then put into production
 sudo cp $LOCATION$OPERATIONS$OPERATIONS_TEMPLATE ./$TOPIC.tmp
-
 
 # Makes changes to date in template file and outputs to final topic.
 sudo sed '2i\'"$MEETINGDATE" $TOPIC.tmp > $TOPIC.txt
@@ -68,9 +74,8 @@ sudo mv $TOPIC.txt $LOCATION$OPERATIONS
 # Confirms file that was created.  Not needed if put in crontab.
 echo $TOPIC.txt created.
 
-
 # Creates local temp file of Meeting Minutes list
-sudo cp $LOCATION$OPERATIONSProductionMeetingMinutes.txt ./ProductionMeetingMinutes.tmp
+sudo cp $LOCATION$OPERATIONS"ProductionMeetingMinutes.txt" ProductionMeetingMinutes.tmp
 
 # Inserts topic into correct spot in list
 sudo sed '17i\'"   * $TOPIC" ProductionMeetingMinutes.tmp > ProductionMeetingMinutes.txt
@@ -80,3 +85,18 @@ sudo chown apache:apache ProductionMeetingMinutes.txt
 
 # Places edited file into production
 sudo mv ProductionMeetingMinutes.txt $LOCATION$OPERATIONS
+
+
+#############################################################################################
+
+else
+
+	echo "Good Day!"
+
+#############################################################################################
+####################################### Finish #############################################
+#############################################################################################
+
+fi
+
+#############################################################################################
