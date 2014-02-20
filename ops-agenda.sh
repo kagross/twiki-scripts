@@ -7,10 +7,12 @@
 
 LOCATION=/usr/local/twiki/
 
-OPERATIONS=/data/Operations
+#Template Locations (No Leading / )
 
-echo $LOCATION
-echo $OPERATIONS
+OPERATIONS=data/Operations/OperationsMeetingTemplate.txt
+
+
+
 
 #Get the full word Value of today (ie Monday, Tuesday)
 TODAY=$(date "+%A" -d today)
@@ -28,8 +30,10 @@ else
         MEETINGDATE=$(echo ---+ Operations Meeting `date "+%B %d, %Y" -d next-monday`)
 fi
 
+
 # Uses template file to copy Topic into a temporary file to be edited then put into production
-sudo cp /usr/local/twiki/data/Operations/OperationsMeetingTemplate.txt ./$TOPIC.tmp
+sudo cp $LOCATION$OPERATIONS ./$TOPIC.tmp
+
 
 # Makes changes to date in template file and outputs to final topic.
 sudo sed '2i\'"$MEETINGDATE" $TOPIC.tmp > $TOPIC.txt
